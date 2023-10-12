@@ -10,6 +10,7 @@ public class GridManager : MonoBehaviour {
     private Sorter sorter;
 
     private Furniture SelectedFurniture;
+    private IInventoryItem invenFurniture;
 
     private bool dragging = false;
 
@@ -19,6 +20,10 @@ public class GridManager : MonoBehaviour {
 	public Button undoButton;
     public Toggle mode;
     public SpriteRenderer grids;
+
+    public Inventory Inventory;
+
+
 
     void Awake ()
     {
@@ -42,11 +47,13 @@ public class GridManager : MonoBehaviour {
 			interactBtnGroup.gameObject.SetActive(false);
 		});
         mode.onValueChanged.AddListener(value => grids.enabled = value);
+
+        Inventory.ItemAdded += InventoryScript_ItemAdded;
     }
 	
 	void Update () {
 
-        if (!mode.isOn)
+        if (!mode.isOn) //일반모드일때 리턴
             return;
         mode.interactable = SelectedFurniture == null;
         
@@ -62,10 +69,31 @@ public class GridManager : MonoBehaviour {
         if (dragging)
             OnDrag();
 
-
+        if (Input.GetMouseButtonDown(1))
+        {
+            PutItemToInven();
+        }
     }
 
+    private void InventoryScript_ItemAdded(object sender, InventoryEventArgs e)
+    {
+        Transform inventoryPanel = transform.Find("Invenmark_Theme");
+        foreach(Transform slot in inventoryPanel)
+        {
+            //Border... Image
+            Image image = slot.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>();
+            // We found the empty slot
+            if (!image.enabled)
+            {
+                image.enabled = true;
+                image.sprite = e.Item.Image;
 
+                //ToDo: Store a reference to the item
+
+                break;
+            }
+        }
+    }
 
     private void OnBeginDrag(Action<bool> isHold) {
 
@@ -75,7 +103,7 @@ public class GridManager : MonoBehaviour {
             if (furniture != null)
             {
                 SelectedFurniture = furniture.transform.parent.GetComponent<Furniture>();
-                SelectedFurniture.Unplaced();
+                SelectedFurniture.Unplaced(); // 고정 해제
             }
             isHold(furniture != null);
         }
@@ -85,6 +113,20 @@ public class GridManager : MonoBehaviour {
             isHold(furniture != null && furniture.transform.parent.GetComponent<Furniture>() == SelectedFurniture);
         }
 
+    }
+
+    //좌클릭으로 인벤에 넣는 함수
+    private void PutItemToInven()
+    {
+        if (SelectedFurniture == null)
+        {
+            var furniture = OnSelect(child => child.transform.parent.GetComponent<IInventoryItem>() != null);
+            if (furniture != null)
+            {
+                invenFurniture = furniture.transform.parent.GetComponent<IInventoryItem>();
+                Inventory.AddItem(invenFurniture);
+            }
+        }
     }
 
     private void OnDrag()
