@@ -50,5 +50,6 @@ public class InventoryItem : MonoBehaviour
                 break;
         }
         RemoveItem();
+        InventoryManager.Instance.CreateObject(item);
     }
 }

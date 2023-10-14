@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   itemName: Seat
-  value: 0
+  cost: 5
   icon: {fileID: 21300000, guid: 2d976ce65498841018b8af1221d0169e, type: 3}
+  itemType: 0

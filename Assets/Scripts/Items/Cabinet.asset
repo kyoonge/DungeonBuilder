@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   itemName: Cabinet
-  value: 0
+  cost: 10
   icon: {fileID: 21300000, guid: af02030461d624d48ab24df0c7e60a34, type: 3}
+  itemType: 0

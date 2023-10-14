@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   itemName: Table
-  value: 0
+  cost: 15
   icon: {fileID: 21300000, guid: 1398e021a06434daca12ede8e6dcae23, type: 3}
+  itemType: 0

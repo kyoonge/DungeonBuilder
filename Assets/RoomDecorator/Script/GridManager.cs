@@ -21,7 +21,8 @@ public class GridManager : MonoBehaviour {
     public Toggle mode;
     public SpriteRenderer grids;
 
-    //public Inventory Inventory;
+    //inventory
+    public bool isInstalling;
 
 
 
@@ -48,7 +49,7 @@ public class GridManager : MonoBehaviour {
 		});
         mode.onValueChanged.AddListener(value => grids.enabled = value);
 
-        //Inventory.ItemAdded += InventoryScript_ItemAdded;
+        InventoryManager.Instance.inventory.SetActive(false);
     }
 	
 	void Update () {
@@ -79,25 +80,6 @@ public class GridManager : MonoBehaviour {
         }
     }
 
-    private void InventoryScript_ItemAdded(object sender, InventoryEventArgs e)
-    {
-        Transform inventoryPanel = transform.Find("Invenmark_Theme");
-        foreach(Transform slot in inventoryPanel)
-        {
-            //Border... Image
-            Image image = slot.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>();
-            // We found the empty slot
-            if (!image.enabled)
-            {
-                image.enabled = true;
-                image.sprite = e.Item.Image;
-
-                //ToDo: Store a reference to the item
-
-                break;
-            }
-        }
-    }
 
     private void OnBeginDrag(Action<bool> isHold) {
 
@@ -141,6 +123,7 @@ public class GridManager : MonoBehaviour {
             return;
 
         var tile = OnSelect(obj => obj.GetComponent<Tile>() != null);
+        //타일 위일때
         if (tile != null)
         {
             interactBtnGroup.gameObject.SetActive(false);
@@ -148,6 +131,10 @@ public class GridManager : MonoBehaviour {
 
             List<Tile> area;
             OnInvalid(SelectedFurniture, out area);
+        }
+        else
+        {
+            Debug.Log("Draging");
         }
     }
 

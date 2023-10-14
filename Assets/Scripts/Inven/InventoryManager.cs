@@ -7,12 +7,15 @@ public class InventoryManager : MonoBehaviour
 {
 
     public static InventoryManager Instance;
+    public GameObject[] scrollViews;
+    public GameObject inventory;
     public Item[] ItemSampleList;
     public List<Item> Items = new List<Item>();
 
     public Transform ItemContent;
     public GameObject InventoryItem;
-    // Start is called before the first frame update
+
+    public Transform[] spawnPositions;
 
     private void Awake()
     {
@@ -26,11 +29,18 @@ public class InventoryManager : MonoBehaviour
         AddListItem(0);
         AddListItem(1);
         AddListItem(2);
+        ListItems();
     }
     public void Pickup(ItemController item)
     {
+        //오브젝트 삭제하고 인벤에 넣기
         Add(item.Item);
         Destroy(item.gameObject);
+
+        foreach (var scrollView in scrollViews)
+        {
+            scrollView.SetActive(false);
+        }
     }
 
     public void Add(Item item)
@@ -44,8 +54,14 @@ public class InventoryManager : MonoBehaviour
 
     public void ListItems()
     {
-        //인벤 버튼 누를때마다 슬롯 업데이트
-        foreach(var item in Items)
+        // ItemContent 오브젝트의 자식 오브젝트를 모두 삭제
+        foreach (Transform child in ItemContent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        //인벤 업데이트
+        foreach (var item in Items)
         {
             GameObject obj = Instantiate(InventoryItem, ItemContent);
             //var itemName = obj.transform.Find("ItemName").GetComponent<Text>();
@@ -63,5 +79,15 @@ public class InventoryManager : MonoBehaviour
         //Cabinet, Seat, Table
         Item newItem;
         newItem = ItemSampleList[index];
+
+    }
+
+    public void CreateObject(Item item)
+    {
+        int spawnPos = Random.Range(0, 7);
+        GameObject newObject;
+        newObject = Resources.Load("Objects/" + item.itemName) as GameObject;
+        Instantiate(newObject, spawnPositions[spawnPos].position, Quaternion.identity);
+        
     }
 }
