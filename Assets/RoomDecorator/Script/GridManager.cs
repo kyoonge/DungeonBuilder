@@ -10,7 +10,7 @@ public class GridManager : MonoBehaviour {
     private Sorter sorter;
 
     private Furniture SelectedFurniture;
-    private IInventoryItem invenFurniture;
+    private ItemController invenFurniture;
 
     private bool dragging = false;
 
@@ -21,7 +21,7 @@ public class GridManager : MonoBehaviour {
     public Toggle mode;
     public SpriteRenderer grids;
 
-    public Inventory Inventory;
+    //public Inventory Inventory;
 
 
 
@@ -48,7 +48,7 @@ public class GridManager : MonoBehaviour {
 		});
         mode.onValueChanged.AddListener(value => grids.enabled = value);
 
-        Inventory.ItemAdded += InventoryScript_ItemAdded;
+        //Inventory.ItemAdded += InventoryScript_ItemAdded;
     }
 	
 	void Update () {
@@ -58,7 +58,11 @@ public class GridManager : MonoBehaviour {
         mode.interactable = SelectedFurniture == null;
         
         if (Input.GetMouseButtonDown(0))
+        {
             OnBeginDrag(isHold => dragging = isHold);
+            Debug.Log("Click");
+        }
+            
 
         else if (Input.GetMouseButtonUp(0))
         {
@@ -106,11 +110,13 @@ public class GridManager : MonoBehaviour {
                 SelectedFurniture.Unplaced(); // 고정 해제
             }
             isHold(furniture != null);
+            Debug.Log("1");
         }
         else
         {
             var furniture = OnSelect(child => child.transform.parent.GetComponent<Furniture>() != null);
             isHold(furniture != null && furniture.transform.parent.GetComponent<Furniture>() == SelectedFurniture);
+            Debug.Log("2");
         }
 
     }
@@ -120,11 +126,11 @@ public class GridManager : MonoBehaviour {
     {
         if (SelectedFurniture == null)
         {
-            var furniture = OnSelect(child => child.transform.parent.GetComponent<IInventoryItem>() != null);
+            var furniture = OnSelect(child => child.transform.parent.GetComponent<ItemController>() != null);
             if (furniture != null)
             {
-                invenFurniture = furniture.transform.parent.GetComponent<IInventoryItem>();
-                Inventory.AddItem(invenFurniture);
+                invenFurniture = furniture.transform.parent.GetComponent<ItemController>();
+                InventoryManager.Instance.Pickup(invenFurniture);
             }
         }
     }
