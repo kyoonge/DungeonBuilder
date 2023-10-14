@@ -21,6 +21,7 @@ public class RoadManager : MonoBehaviour
         roadFixer = GetComponent<RoadFixer>();
     }
 
+    //도로를 배치할 수 있는지 여부 확인 후 도로 배치
     public void PlaceRoad(Vector3Int position)
     {
         if (placementManager.CheckIfPositionInBound(position) == false)
@@ -39,7 +40,7 @@ public class RoadManager : MonoBehaviour
             placementManager.PlaceTemporaryStructure(position, roadFixer.deadEnd, CellType.Road);
 
         }
-        else
+        else// 도로 설치 가능
         {
             placementManager.RemoveAllTemporaryStructures();
             temporaryPlacementPositions.Clear();
@@ -64,29 +65,29 @@ public class RoadManager : MonoBehaviour
             }
         }
 
-        FixRoadPrefabs();
+        //FixRoadPrefabs();
 
     }
 
-    private void FixRoadPrefabs()
-    {
-        foreach (var temporaryPosition in temporaryPlacementPositions)
-        {
-            roadFixer.FixRoadAtPosition(placementManager, temporaryPosition);
-            var neighbours = placementManager.GetNeighboursOfTypeFor(temporaryPosition, CellType.Road);
-            foreach (var roadposition in neighbours)
-            {
-                if (roadPositionsToRecheck.Contains(roadposition)==false)
-                {
-                    roadPositionsToRecheck.Add(roadposition);
-                }
-            }
-        }
-        foreach (var positionToFix in roadPositionsToRecheck)
-        {
-            roadFixer.FixRoadAtPosition(placementManager, positionToFix);
-        }
-    }
+    //private void FixRoadPrefabs()
+    //{
+    //    foreach (var temporaryPosition in temporaryPlacementPositions)
+    //    {
+    //        roadFixer.FixRoadAtPosition(placementManager, temporaryPosition);
+    //        var neighbours = placementManager.GetNeighboursOfTypeFor(temporaryPosition, CellType.Road);
+    //        foreach (var roadposition in neighbours)
+    //        {
+    //            if (roadPositionsToRecheck.Contains(roadposition)==false)
+    //            {
+    //                roadPositionsToRecheck.Add(roadposition);
+    //            }
+    //        }
+    //    }
+    //    foreach (var positionToFix in roadPositionsToRecheck)
+    //    {
+    //        roadFixer.FixRoadAtPosition(placementManager, positionToFix);
+    //    }
+    //}
 
     public void FinishPlacingRoad()
     {

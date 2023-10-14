@@ -26,7 +26,7 @@ public class InventoryManager : MonoBehaviour
     {
         //임시로 인벤토리 채우기
         AddListItem(0);
-        AddListItem(0);
+        AddListItem(1);
         AddListItem(1);
         AddListItem(2);
         ListItems();

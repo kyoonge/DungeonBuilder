@@ -12,6 +12,7 @@ public class Item : ScriptableObject
     public enum ItemType
     {
         Furniture,
-        Monster
+        Monster,
+        Trap
     }
 }
