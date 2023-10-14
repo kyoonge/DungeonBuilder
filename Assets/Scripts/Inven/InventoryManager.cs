@@ -17,6 +17,9 @@ public class InventoryManager : MonoBehaviour
 
     public Transform[] spawnPositions;
 
+    //생성할 아이템 부모
+    public Transform ItemParent;
+
     private void Awake()
     {
         Instance = this;
@@ -24,6 +27,8 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
+        ItemParent = GameObject.Find("Objects").GetComponent<Transform>();
+
         //임시로 인벤토리 채우기
         AddListItem(0);
         AddListItem(1);
@@ -37,10 +42,7 @@ public class InventoryManager : MonoBehaviour
         Add(item.Item);
         Destroy(item.gameObject);
 
-        foreach (var scrollView in scrollViews)
-        {
-            scrollView.SetActive(false);
-        }
+        ShutScrollView();
     }
 
     public void Add(Item item)
@@ -87,7 +89,15 @@ public class InventoryManager : MonoBehaviour
         int spawnPos = Random.Range(0, 7);
         GameObject newObject;
         newObject = Resources.Load("Objects/" + item.itemName) as GameObject;
-        Instantiate(newObject, spawnPositions[spawnPos].position, Quaternion.identity);
+        Instantiate(newObject, spawnPositions[spawnPos].position, Quaternion.identity, ItemParent);
         
+    }
+
+    public void ShutScrollView()
+    {
+        foreach (var scrollView in scrollViews)
+        {
+            scrollView.SetActive(false);
+        }
     }
 }

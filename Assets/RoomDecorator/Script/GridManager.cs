@@ -6,6 +6,8 @@ using Model;
 
 public class GridManager : MonoBehaviour {
 
+    public static GridManager Instance;
+
     private Tiles tiles;
     private Sorter sorter;
 
@@ -22,12 +24,15 @@ public class GridManager : MonoBehaviour {
     public SpriteRenderer grids;
 
     //inventory
-    public bool isInstalling;
+    public bool isInvenMode;
+    public bool isTileMode;
 
 
 
     void Awake ()
     {
+        Instance = this;
+
         sorter = GameObject.Find("Unit").GetComponent<Sorter>();
         tiles = GameObject.Find("Tiles").GetComponent<Tiles>();
     }
@@ -56,28 +61,36 @@ public class GridManager : MonoBehaviour {
 
         if (!mode.isOn) //일반모드일때 리턴
             return;
-        mode.interactable = SelectedFurniture == null;
+
+        if(isInvenMode == true)
+        {
+            //인벤 모드일때
+            mode.interactable = SelectedFurniture == null;
         
-        if (Input.GetMouseButtonDown(0))
-        {
-            OnBeginDrag(isHold => dragging = isHold);
-            Debug.Log("Click");
-        }
-            
+            if (Input.GetMouseButtonDown(0))
+            {
+                OnBeginDrag(isHold => dragging = isHold);
+                Debug.Log("Click");
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                dragging = false;
+                OnEndDrag();
+            }
+            if (dragging)
+                OnDrag();
 
-        else if (Input.GetMouseButtonUp(0))
-        {
-            dragging = false;
-            OnEndDrag();
+            if (Input.GetMouseButtonDown(1))
+            {
+                PutItemToInven();
+            }
         }
 
-        if (dragging)
-            OnDrag();
-
-        if (Input.GetMouseButtonDown(1))
+        if(isTileMode == true)
         {
-            PutItemToInven();
+
         }
+
     }
 
 
@@ -216,5 +229,23 @@ public class GridManager : MonoBehaviour {
         furniture.Move (furniture.previous.tile);
         furniture.Rotate (furniture.previous.direction);
         OnPlaceFurniture(furniture);
+    }
+
+    public void StartInvenMode()
+    {
+        isInvenMode = true;
+        isTileMode = false;
+        InventoryManager.Instance.ShutScrollView();
+        InventoryManager.Instance.scrollViews[0].SetActive(true);
+        InventoryManager.Instance.ItemParent.gameObject.SetActive(true);
+    }
+
+    public void StartTileMode()
+    {
+        isInvenMode = false;
+        isTileMode = true;
+        InventoryManager.Instance.ShutScrollView();
+        InventoryManager.Instance.scrollViews[1].SetActive(true);
+        InventoryManager.Instance.ItemParent.gameObject.SetActive(false);
     }
 }
