@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41b567c7f5e85f84fa3db7ae5c4d6bb3, type: 3}
-  m_Name: Ghost
+  m_Name: Present
   m_EditorClassIdentifier: 
-  id: 4
-  itemName: Ghost
-  cost: 10
-  Demage: 2
-  icon: {fileID: 21300000, guid: 7cff686e844fd30458015196fe15aa90, type: 3}
-  itemType: 1
+  id: 7
+  itemName: Present
+  cost: 5
+  Demage: 10
+  icon: {fileID: 21300000, guid: 6fdbad7f015eaf849b3e55e6586b09d1, type: 3}
+  itemType: 3

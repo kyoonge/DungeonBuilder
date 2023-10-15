@@ -9,7 +9,7 @@ public class Tiles : MonoBehaviour {
     public static Tiles Instance;
     public int width = 10;
     public int length = 10;
-    private Tile[,] tiles;
+    public Tile[,] tiles;
     private int autoIncrement = 1;
 
     public Sprite tileSprite;
@@ -24,6 +24,8 @@ public class Tiles : MonoBehaviour {
 
     private Vector3 dragStartPos;
     private Vector3 dragEndPos;
+
+    private int countTrackTile = 0;
 
     void Awake()
     {
@@ -106,6 +108,7 @@ public class Tiles : MonoBehaviour {
 
         isDrag = true; // 호버링 색상 변경 중단
         //리스트에 넣기
+        countTrackTile = 0;
     }
 
     public void DragTile()
@@ -128,8 +131,20 @@ public class Tiles : MonoBehaviour {
             {
                 tile.Visual.GetComponent<SpriteRenderer>().color = Color.white;
                 tile.Visual.GetComponent<SpriteRenderer>().sprite = curTile;
+
+                //길 타일 표시
+                if(curTile == trackSprite)
+                {
+                    tile.isTrack = true;
+                    countTrackTile += 0;
+                }
+                else
+                {
+                    tile.isTrack = false;
+                }
             }
         }
+
     }
 
     public void UndoTile()

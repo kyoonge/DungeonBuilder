@@ -53,7 +53,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 314608c211c7c7c4e9ae6d615b927cba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -151,7 +151,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 314608c211c7c7c4e9ae6d615b927cba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -207,9 +207,10 @@ GameObject:
   - component: {fileID: 4455499187310482}
   - component: {fileID: 114264203324841414}
   - component: {fileID: 1591136733}
+  - component: {fileID: 2802997935078616454}
   m_Layer: 9
   m_Name: Tiger
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -264,7 +265,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46f03641ea9ee8a408c8ef230b79b2e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Item: {fileID: 11400000, guid: 08186f8ae2509034abc4f0f799d6e6c2, type: 2}
+  Item: {fileID: 11400000, guid: 538c493f034bd0b40aac30c9d7ade7ab, type: 2}
+--- !u!70 &2802997935078616454
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154802079869436}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.273085, y: 1.76}
+  m_Size: {x: 3.94617, y: 3.9461703}
+  m_Direction: 0
 --- !u!1 &1305785854826092
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,7 +335,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 314608c211c7c7c4e9ae6d615b927cba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -416,7 +433,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 314608c211c7c7c4e9ae6d615b927cba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

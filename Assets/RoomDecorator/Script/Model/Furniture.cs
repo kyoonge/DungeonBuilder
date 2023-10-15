@@ -23,6 +23,14 @@ namespace Model
         private const string Unit_LAYER = "Unit";
         private const string PREVIEW_LAYER = "Preview";
 
+        //private void OnTriggerEnter2D(Collider2D collision)
+        //{
+        //    if (collision.CompareTag("Player"))
+        //    {
+        //        Debug.Log(this.name+" It's Player!");
+        //    }
+        //}
+
         public void Rotate()
         {
             direction = (Direction)(((int)direction + 1) % 4);

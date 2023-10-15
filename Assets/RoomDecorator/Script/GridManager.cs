@@ -60,7 +60,10 @@ public class GridManager : MonoBehaviour {
 	void Update () {
 
         if (!mode.isOn) //일반모드일때 리턴
+        {
             return;
+        }
+
 
         if(isInvenMode == true)
         {
@@ -173,8 +176,10 @@ public class GridManager : MonoBehaviour {
             var furniture = OnSelect(child => child.transform.parent.GetComponent<ItemController>() != null);
             if (furniture != null)
             {
+                
                 invenFurniture = furniture.transform.parent.GetComponent<ItemController>();
-                InventoryManager.Instance.Pickup(invenFurniture);
+                UIManager.Instance.DecreaseCost(invenFurniture.Item.cost);
+                InventoryManager.Instance.Pickup(invenFurniture);               
             }
         }
     }

@@ -11,6 +11,7 @@ namespace Model
         private bool isMouseOver = false;
         private Color originalColor;
         public Transform Visual;
+        public bool isTrack = false;
 
         public void Set(int x, int y)
         {

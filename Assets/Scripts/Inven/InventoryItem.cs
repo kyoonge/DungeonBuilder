@@ -48,6 +48,9 @@ public class InventoryItem : MonoBehaviour
             case Item.ItemType.Monster:
                 UIManager.Instance.IncreaseCost(item.cost);
                 break;
+            case Item.ItemType.Present:
+                UIManager.Instance.IncreaseCost(item.cost);
+                break;
         }
         RemoveItem();
         InventoryManager.Instance.CreateObject(item);

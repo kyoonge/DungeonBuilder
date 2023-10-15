@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class InventoryManager : MonoBehaviour
         AddListItem(1);
         AddListItem(1);
         AddListItem(2);
+        AddListItem(3);
         ListItems();
     }
     public void Pickup(ItemController item)
@@ -68,8 +70,10 @@ public class InventoryManager : MonoBehaviour
             GameObject obj = Instantiate(InventoryItem, ItemContent);
             //var itemName = obj.transform.Find("ItemName").GetComponent<Text>();
             Image itemIcon = obj.transform.Find("Border/ItemImage").GetComponent<Image>();
+            TMP_Text text = obj.transform.Find("Text").GetComponent<TMP_Text>();
             InventoryItem inventoryItem = obj.transform.Find("Border/ItemImage").GetComponent<InventoryItem>();
             inventoryItem.AddItem(item);
+            text.text = item.itemName;
             Debug.Log(itemIcon);
             //itemName.text = item.itemName;
             itemIcon.sprite = item.icon;

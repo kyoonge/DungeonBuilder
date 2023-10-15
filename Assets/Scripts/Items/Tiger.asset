@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 4
   itemName: Tiger
-  cost: 10
+  cost: 20
+  Demage: 10
   icon: {fileID: 21300000, guid: aded758c9147400488ee4f1320629ce9, type: 3}
   itemType: 1
