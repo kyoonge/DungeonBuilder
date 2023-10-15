@@ -1,15 +1,35 @@
 ﻿using Model;
+using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Tiles : MonoBehaviour {
 
+    public static Tiles Instance;
     public int width = 10;
     public int length = 10;
     private Tile[,] tiles;
     private int autoIncrement = 1;
 
-    void Start()
+    public Sprite tileSprite;
+    public Sprite trackSprite;
+    private Sprite curTile;
+    public int curX, curY;
+    public int firstX, firstY;
+    public bool isDrag =false;
+    public List<Vector2> dragTiles = new List<Vector2>();
+    [SerializeField]private bool isTrackTileMode = false;
+    public List<Vector2> pastPointsInRectangle = new List<Vector2>();
+
+    private Vector3 dragStartPos;
+    private Vector3 dragEndPos;
+
+    void Awake()
+    {
+        Instance = this;
+    }
+        void Start()
     {
         tiles = new Tile[width, length];
 
@@ -38,9 +58,16 @@ public class Tiles : MonoBehaviour {
         obj.AddComponent<MeshCollider>();
         obj.transform.SetParent(gameObject.transform);
         obj.transform.localPosition = new Vector3(((y - x) * 2), (x + y), 0);
-
+        obj.layer = LayerMask.NameToLayer("Tile");
         var tile = obj.AddComponent<Tile>();
         tile.Set(x, y);
+
+        GameObject visualObject = new GameObject("Visual");
+        visualObject.transform.SetParent(obj.transform);
+        visualObject.transform.position = tile.transform.position;
+        SpriteRenderer spriteRenderer = visualObject.AddComponent<SpriteRenderer>();
+
+        spriteRenderer.sprite = tileSprite;
 
         return tile;
     }
@@ -68,5 +95,110 @@ public class Tiles : MonoBehaviour {
             return null;
 
         return tiles[x, y];
+    }
+
+    public void DragTileStart()
+    {
+        Debug.Log("DragTileStart()");
+
+        firstX = curX;
+        firstY = curY;
+
+        isDrag = true; // 호버링 색상 변경 중단
+        //리스트에 넣기
+    }
+
+    public void DragTile()
+    {
+        //Debug.Log("DragTile() "+curX+", "+curY);
+        //Tile nowTile = tiles[curX,curY];
+        //nowTile.Visual.GetComponent<SpriteRenderer>().color = Color.red;
+        ColorTilesInRectangle(new Vector2(firstX,firstY), new Vector2(curX,curY), Color.green);
+    }
+
+    public void DragTileEnd()
+    {
+        Debug.Log("DragTileEnd()");
+        isDrag = false;
+
+        foreach (Vector2 point in pastPointsInRectangle)
+        {
+            Tile tile = tiles[(int)point.x, (int)point.y];
+            if (tile != null)
+            {
+                tile.Visual.GetComponent<SpriteRenderer>().color = Color.white;
+                tile.Visual.GetComponent<SpriteRenderer>().sprite = curTile;
+            }
+        }
+    }
+
+    public void UndoTile()
+    {
+        Debug.Log("UndoTile()");
+    }
+
+    public void SetTileType(bool _isTrack)
+    {
+        isTrackTileMode = _isTrack;
+        curTile = isTrackTileMode ? trackSprite : tileSprite;
+    }
+
+    private void CheckTileType()
+    {
+    }
+
+    private void ChangeTile()
+    {
+
+    }
+
+    public void ColorTilesInRectangle(Vector2 start, Vector2 end, Color color)
+    {
+        List<Vector2> pointsInRectangle = GetPointsInRectangle(start, end);
+
+        // 이전에 색상이 변경된 좌표와 비교하여 색상을 원래 색으로 되돌림
+        foreach (Vector2 point in pastPointsInRectangle)
+        {
+            if (!pointsInRectangle.Contains(point))
+            {
+                Tile tile = tiles[(int)point.x, (int)point.y];
+                if (tile != null)
+                {
+                    tile.Visual.GetComponent<SpriteRenderer>().color = Color.white; // 원래 색상
+                }
+            }
+        }
+
+        foreach (Vector2 point in pointsInRectangle)
+        {
+            Tile tile = tiles[(int)point.x,(int)point.y];
+            if (tile != null)
+            {
+                tile.Visual.GetComponent<SpriteRenderer>().color = color;
+            }
+        }
+
+        pastPointsInRectangle.Clear();
+        pastPointsInRectangle = pointsInRectangle;
+    }
+
+    private List<Vector2> GetPointsInRectangle(Vector2 start, Vector2 end)
+    {
+        List<Vector2> points = new List<Vector2>();
+
+        float minX = Mathf.Min(start.x, end.x);
+        float maxX = Mathf.Max(start.x, end.x);
+        float minY = Mathf.Min(start.y, end.y);
+        float maxY = Mathf.Max(start.y, end.y);
+
+        for (float x = minX; x <= maxX; x++)
+        {
+            for (float y = minY; y <= maxY; y++)
+            {
+                points.Add(new Vector2(x, y));
+            }
+        }
+
+        return points;
     }
 }

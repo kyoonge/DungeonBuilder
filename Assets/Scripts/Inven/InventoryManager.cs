@@ -81,7 +81,7 @@ public class InventoryManager : MonoBehaviour
         //Cabinet, Seat, Table
         Item newItem;
         newItem = ItemSampleList[index];
-
+        Add(newItem);
     }
 
     public void CreateObject(Item item)

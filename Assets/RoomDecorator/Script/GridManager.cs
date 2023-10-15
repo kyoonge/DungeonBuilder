@@ -88,7 +88,56 @@ public class GridManager : MonoBehaviour {
 
         if(isTileMode == true)
         {
+            //타일 모드일때
 
+            //드래그
+
+            if(Input.GetMouseButtonDown(0))
+            {
+                // 마우스 클릭한 위치를 스크린 좌표로 가져옴
+                Vector3 clickPosition = Input.mousePosition;
+
+                // 메인 카메라에서 마우스 클릭 위치로 레이를 쏨
+                Ray ray = Camera.main.ScreenPointToRay(clickPosition);
+
+                // 레이캐스트를 수행하고 충돌 정보를 저장
+                RaycastHit hitInfo;
+
+                if (Physics.Raycast(ray, out hitInfo))
+                {
+                    // 충돌한 오브젝트 가져오기
+                    GameObject clickedObject = hitInfo.collider.gameObject;
+                    if (clickedObject.layer != LayerMask.NameToLayer("Tile"))
+                    {
+                        Debug.Log("return");
+                        return;
+                    }
+
+                }
+                else { return; }
+
+
+                Tiles.Instance.DragTileStart();
+                dragging = true;
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                if (dragging)
+                {
+                    dragging = false;
+                    Tiles.Instance.DragTileEnd();
+                }
+
+            }
+            if (dragging)
+            {
+                Tiles.Instance.DragTile();
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                Tiles.Instance.UndoTile();
+            }
         }
 
     }
@@ -248,4 +297,5 @@ public class GridManager : MonoBehaviour {
         InventoryManager.Instance.scrollViews[1].SetActive(true);
         InventoryManager.Instance.ItemParent.gameObject.SetActive(false);
     }
+
 }
